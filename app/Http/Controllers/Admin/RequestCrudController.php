@@ -88,16 +88,34 @@ class RequestCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        $this->crud->addField([
-            'label' => "Team",
-            'type' => 'select',
-            'name' => 'team_id',
-            'model' => "App\Models\Team",
-            'attribute' => 'name',
-            'options' => (function ($query) {
-                return $query->orderBy('name', 'ASC')->get();
-            }),
+//        $this->crud->addField([
+//            'label' => "Team",
+//            'type' => 'select',
+//            'name' => 'team_id',
+//            'model' => "App\Models\Team",
+//            'attribute' => 'name',
+//            'options' => (function ($query) {
+//                return $query->orderBy('name', 'ASC')->get();
+//            }),
+//        ]);
+        $this->crud->addField([   // n-n relationship
+            'label'       => "Cities", // Table column heading
+            'type'        => "select2_from_ajax_multiple",
+            'name'        => 'cities', // a unique identifier (usually the method that defines the relationship in your Model)
+            'entity'      => 'cities', // the method that defines the relationship in your Model
+            'attribute'   => "name", // foreign key attribute that is shown to user
+            'data_source' => url("api/city"), // url to controller search function (with /{id} should return model)
+            'pivot'       => true, // on create&update, do you need to add/delete pivot table entries?
+
+            // OPTIONAL
+            'delay' => 500, // the minimum amount of time between ajax requests when searching in the field
+            'model'                => "App\Models\City", // foreign key model
+            'placeholder'          => "Select a city", // placeholder for the select
+            'minimum_input_length' => 2, // minimum characters to type before querying results
+            // 'include_all_form_fields'  => false, // optional - only send the current field through AJAX (for a smaller payload if you're not using multiple chained select2s)
         ]);
+
+
         $this->crud->addField([   // select_from_array
             'name' => 'request_type',
             'label' => "Request type",
