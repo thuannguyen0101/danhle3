@@ -40,8 +40,8 @@ class Request extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-    public function team(){
-        return $this->belongsToMany(Team::class);
+    public function mail(){
+        return $this->belongsToMany(mail::class);
     }
     /*
     |--------------------------------------------------------------------------

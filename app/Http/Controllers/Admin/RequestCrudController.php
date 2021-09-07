@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RequestRequest;
+use App\Models\mail;
 use App\Models\Request;
 use App\Models\TeamDetail;
 use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Support\Facades\Mail;
+
 
 /**
  * Class RequestCrudController
@@ -88,14 +89,18 @@ class RequestCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+
+
         $this->crud->addField([
-            'label' => "Team",
-            'type' => 'select',
-            'name' => 'team_id',
-            'model' => "App\Models\Team",
-            'attribute' => 'name',
-            'options' => (function ($query) {
-                return $query->orderBy('name', 'ASC')->get();
+            'label'     => "Tags",
+            'type'      => 'select2_multiple',
+            'name'      => 'tags',
+            'entity'    => 'mail',
+            'model'     => "App\Models\mail",
+            'attribute' => 'mail_name',
+            'pivot'     => true,
+            'options'   => (function ($query) {
+                return $query->orderBy('mail_name', 'ASC')->get();
             }),
         ]);
         $this->crud->addField([   // select_from_array
@@ -146,4 +151,5 @@ class RequestCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
 }
