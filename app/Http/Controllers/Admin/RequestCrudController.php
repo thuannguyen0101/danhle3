@@ -102,7 +102,10 @@ class RequestCrudController extends CrudController
             'options'   => (function ($query) {
                 return $query->orderBy('mail_name', 'ASC')->get();
             }),
+
         ]);
+
+
         $this->crud->addField([   // select_from_array
             'name' => 'request_type',
             'label' => "Request type",
