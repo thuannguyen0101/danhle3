@@ -26,7 +26,12 @@ class ProfileWork extends Model
     public function department(){
         return $this->belongsTo(Department::class,'department_id');
     }
-
+    public function employee(){
+        return $this->belongsTo(User::class,'employee_id');
+    }
+    public function teamDetail(){
+        return $this->belongsTo(TeamDetail::class,'employee_id');
+    }
     public function team(){
         return $this->belongsToMany(Team::class);
     }

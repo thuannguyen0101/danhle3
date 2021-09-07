@@ -39,6 +39,29 @@ class DepartmentCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->addClause('where', 'id', 1);
+        // simple filter
+        $this->crud->addFilter([
+            'type' => 'text',
+            'name' => 'manager',
+            'label' => 'Search by name Manager'
+        ],
+            false,
+            function ($value) {
+                $this->crud->addClause('whereHas','manager',function($query) use ($value){
+                    $query->where('name','like', '%'.$value.'%');
+                } );
+            }
+        );
+        $this->crud->addFilter([
+            'name' => 'name',
+            'type' => 'dropdown',
+            'label' => 'Name Department'
+        ],function() {
+            return \App\Models\Department::all()->pluck('name', 'name')->toArray();
+        }, function ($value) { //
+            $this->crud->addClause('where', 'name', $value);
+        });
         CRUD::addColumn([
             'label' => "Manager",
             'type' => 'select',

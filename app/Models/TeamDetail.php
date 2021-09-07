@@ -16,15 +16,47 @@ class TeamDetail extends Model
     */
 
     protected $table = 'team_details';
+    // protected $primaryKey = 'id';
+    // public $timestamps = false;
     protected $guarded = ['id'];
+    // protected $fillable = [];
+    // protected $hidden = [];
+    // protected $dates = [];
 
 
+    /*
+    |--------------------------------------------------------------------------
+    | FUNCTIONS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | RELATIONS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | SCOPES
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | ACCESSORS
+    |--------------------------------------------------------------------------
+    */
+
+    /*
+    |--------------------------------------------------------------------------
+    | MUTATORS
+    |--------------------------------------------------------------------------
+    */
+    public function profileWork(){
+        return $this->belongsTo(ProfileWork::class,'employee_id');
+    }
     public function team(){
-        return $this->belongsTo(Team::class);
+        return $this->belongsTo(Team::class,'team_id');
     }
-
-    public function user(){
-        return $this->belongsTo(User::class,'employee_id');
-    }
-
 }

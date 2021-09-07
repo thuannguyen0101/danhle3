@@ -24,12 +24,8 @@ class User extends Authenticatable
         'email',
     ];
 
-    public function team_detail(){
-        return $this->hasMany(TeamDetail::class);
-    }
-
     public function team(){
-        return $this->hasMany(Team::class);
+//        return $this->
     }
 
     /**
@@ -52,5 +48,8 @@ class User extends Authenticatable
     ];
     public function departments(){
         return $this->hasOne(Department::class,'id');
+    }
+    public function profile_word(){
+        return $this->hasOne(ProfileWork::class,'id');
     }
 }
