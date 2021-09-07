@@ -23,3 +23,5 @@
                     class="nav-icon la la-key"></i> <span>Permissions</span></a></li>
     </ul>
 </li>
+
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('mail') }}'><i class='nav-icon la la-question'></i> Mails</a></li>
