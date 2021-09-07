@@ -26,6 +26,9 @@ class Department extends Model
     public function profileWork(){
         return $this->hasMany(ProfileWork::class);
     }
+    public function team(){
+        return $this->hasMany(Team::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
