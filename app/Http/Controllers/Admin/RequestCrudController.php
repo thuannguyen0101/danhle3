@@ -36,7 +36,7 @@ class RequestCrudController extends CrudController
             $data = $this->crud->getRequest()->message;
             $to_name = $user[0]->name;
             $user_email = $user[0]->email;
-            Mail::send('mails.demo_mail', ['request_type'=>$this->crud->getRequest()->request_type,'email'=>backpack_user()->email,'msg' => $data,'user'=>backpack_user()->name], function ($message) use ($to_name, $user_email) {
+            Mail::send('mails.demo_mail', ['request_type' => $this->crud->getRequest()->request_type, 'email' => backpack_user()->email, 'msg' => $data, 'user' => backpack_user()->name], function ($message) use ($to_name, $user_email) {
                 $message->to($user_email, $to_name)
                     ->subject('HRMS Mail');
                 $message->from(env('MAIL_USERNAME'), 'HRMS');
@@ -92,53 +92,38 @@ class RequestCrudController extends CrudController
 
 
         $this->crud->addField([
-            'label'     => "Tags",
-            'type'      => 'select2_multiple',
-            'name'      => 'tags',
-            'entity'    => 'mail',
-            'model'     => "App\Models\mail",
+            'label' => "Gủi tới",
+            'type' => 'select2_multiple',
+            'name' => 'tags',
+            'entity' => 'mail',
+            'model' => "App\Models\mail",
             'attribute' => 'mail_name',
-            'pivot'     => true,
-            'options'   => (function ($query) {
+            'pivot' => true,
+            'options' => (function ($query) {
                 return $query->orderBy('mail_name', 'ASC')->get();
             }),
-
         ]);
 
 
-        $this->crud->addField([   // select_from_array
-            'name' => 'request_type',
-            'label' => "Request type",
-            'type' => 'select_from_array',
-            'options' => ['Leave of absence letter' => 'Leave of absence letter', 'late application letter' => 'Late application letter',],
-            'allows_null' => false,
-            'default' => 'one',
+        $this->crud->addFields([
+            [
+                'label' => "Bắt đầu nghỉ từ ngày",
+                'type' => 'date',
+                'name' => 'start_date',
+            ],
+            [
+                'label' => "Đến ngày",
+                'type' => 'date',
+                'name' => 'end_date',
+            ]
         ]);
-        $this->crud->addField([   // select_from_array
-            'name' => 'request_type',
-            'label' => "Request type",
-            'type' => 'select_from_array',
-            'options' => ['Leave of absence letter' => 'Leave of absence letter', 'late application letter' => 'Late application letter',],
-            'allows_null' => false,
-            'default' => 'one',
-        ]);
+
 
         CRUD::setValidation(RequestRequest::class);
         $this->crud->addField([   // Summernote
                 'name' => 'message',
-                'label' => 'Message',
-                'type' => 'summernote',
-                'options' =>
-                    [
-                        'name' => 'description',
-                        'label' => 'Description',
-                        'type' => 'summernote',
-                        'options' => [
-                            'toolbar' => [
-                                ['font', ['bold', 'underline', 'italic']]
-                            ],
-                        ],
-                    ]
+                'label' => 'Nội dung',
+                'type' => 'textarea',
             ]
         );
 
