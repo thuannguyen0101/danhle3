@@ -6,7 +6,6 @@ use App\Http\Requests\TeamRequest;
 use App\Models\Team;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Class TeamCrudController
@@ -29,7 +28,7 @@ class TeamCrudController extends CrudController
         foreach ($unicode as $nonUnicode => $uni) {
             $str = preg_replace("/($uni)/i", $nonUnicode, $str);
         }
-        $mail_name = 'team'.$str.'@newit.co.jp';
+        $mail_name = 'team' . $str . '@newit.co.jp';
         $mail_name = str_replace(' ', '', $mail_name);
         $mail = new \App\Models\mail();
         $mail->mail_name = $mail_name;
@@ -67,41 +66,40 @@ class TeamCrudController extends CrudController
     protected
     function setupListOperation()
     {
-//        CRUD::setFromDb(); // columns
-
+        $this->crud->addColumn([
+            'name' => 'name',
+            'label' => "Name",
+            'type' => 'text'
+        ]);
 
         $this->crud->addColumn([
-            'label' => 'Department', // Table column heading
+            'label' => 'Department',
             'type' => 'select',
-            'name' => 'department_id', // the column that contains the ID of that connected entity;
-            'entity' => 'department', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\Department", // foreign key model
+            'name' => 'department_id',
+            'entity' => 'department',
+            'attribute' => 'name',
+            'model' => "App\Models\Department",
         ]);
 
         $this->crud->addColumn([
-            'label' => 'Leader', // Table column heading
+            'label' => 'Leader',
             'type' => 'select',
-            'name' => 'leader_id', // the column that contains the ID of that connected entity;
-            'entity' => 'leader', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\User", // foreign key model
-        ]);
-        $this->crud->addColumn([
-            'name' => 'name', // the db column name (attribute name)
-            'label' => "Name", // the human-readable label for it
-            'type' => 'text' // the kind of column to show
-        ]);
-        $this->crud->addColumn([
-            'name' => 'description', // the db column name (attribute name)
-            'label' => "Description", // the human-readable label for it
-            'type' => 'text' // the kind of column to show
+            'name' => 'leader_id',
+            'entity' => 'leader',
+            'attribute' => 'name',
+            'model' => "App\Models\User",
         ]);
 
         $this->crud->addColumn([
-            'name' => 'status', // the db column name (attribute name)
-            'label' => "Status", // the human-readable label for it
-            'type' => 'boolean', // the kind of column to show
+            'name' => 'description',
+            'label' => "Description",
+            'type' => 'text'
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'status',
+            'label' => "Status",
+            'type' => 'boolean',
             'options' => [0 => 'Inactive', 1 => 'Active']
         ]);
 
@@ -112,7 +110,7 @@ class TeamCrudController extends CrudController
             'label' => 'Description'
         ],
             false,
-            function ($value) { // if the filter is active
+            function ($value) {
                 $this->crud->addClause('where', 'description', 'LIKE', "%$value%");
             });
 
@@ -122,7 +120,7 @@ class TeamCrudController extends CrudController
             'label' => 'Name Department'
         ], function () {
             return \App\Models\Department::all()->pluck('name', 'id')->toArray();
-        }, function ($value) { //
+        }, function ($value) {
             $this->crud->addClause('where', 'department_id', $value);
         });
 
@@ -158,7 +156,64 @@ class TeamCrudController extends CrudController
     {
         CRUD::setValidation(TeamRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud->addFields([
+            [
+                'name' => 'name',
+                'label' => 'Tên nhóm',
+                'type' => 'text',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12'
+                ],
+            ],
+            [
+                'label' => "Trường Phòng",
+                'type' => 'select',
+                'name' => 'leader_id',
+                'model' => "App\Models\User",
+                'attribute' => 'name',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
+                ],
+            ],
+            [
+                'label' => "Phòng ban",
+                'type' => 'select',
+                'name' => 'department_id',
+                'model' => "App\Models\Department",
+                'attribute' => 'name',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
+                ]
+            ],
+            [
+                'name' => 'description',
+                'label' => 'Mô tả',
+                'type' => 'textarea',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12'
+                ],
+                'attributes' => [
+                    'rows' => 5,
+                ]
+            ],
+            [
+                'name' => 'status',
+                'label' => 'Trạng thái nhóm',
+                'type' => 'radio',
+                'options'     => [
+                    0 => "Chưa đi vào hoạt động",
+                    1 => "Đang hoạt động"
+                ],
+                'default'=>1
+            ],
+        ]);
+
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -178,7 +233,9 @@ class TeamCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
-    public function unicode(){
+
+    public function unicode()
+    {
         return array(
             'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
             'd' => 'đ',
