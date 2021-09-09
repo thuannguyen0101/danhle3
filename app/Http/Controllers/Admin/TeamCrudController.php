@@ -6,7 +6,6 @@ use App\Http\Requests\TeamRequest;
 use App\Models\Team;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Class TeamCrudController
@@ -75,6 +74,7 @@ class TeamCrudController extends CrudController
         ]);
 
         $this->crud->addColumn([
+
             'label' => 'Phòng',
             'type' => 'select',
             'name' => 'department_id',
@@ -91,19 +91,33 @@ class TeamCrudController extends CrudController
             'attribute' => 'name',
             'model' => "App\Models\User",
         ]);
+
         $this->crud->addColumn([
-            'name' => 'description',
             'label' => "Mô Tả",
             'type' => 'text'
         ]);
 
         $this->crud->addColumn([
             'name' => 'status',
+            'label' => "Status",
+            'type' => 'boolean',
+            'options' => [0 => 'Inactive', 1 => 'Active']
+        ]);
+
+
+        $this->crud->addFilter([
+            'type' => 'text',
+            'name' => 'description',
+            'label' => 'Description'
+        ],
+            false,
+            function ($value) {
+                $this->crud->addClause('where', 'description', 'LIKE', "%$value%");
+            });
             'label' => "Trạng Thái",
             'type' => 'boolean',
             'options' => [0 => 'Ngừng Hoạt Động', 1 => 'Đang Hoạt Động']
         ]);
-
         $this->crud->addFilter([
             'name' => 'name',
             'type' => 'dropdown',
@@ -139,7 +153,64 @@ class TeamCrudController extends CrudController
     {
         CRUD::setValidation(TeamRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud->addFields([
+            [
+                'name' => 'name',
+                'label' => 'Tên nhóm',
+                'type' => 'text',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12'
+                ],
+            ],
+            [
+                'label' => "Trường Phòng",
+                'type' => 'select',
+                'name' => 'leader_id',
+                'model' => "App\Models\User",
+                'attribute' => 'name',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
+                ],
+            ],
+            [
+                'label' => "Phòng ban",
+                'type' => 'select',
+                'name' => 'department_id',
+                'model' => "App\Models\Department",
+                'attribute' => 'name',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
+                ]
+            ],
+            [
+                'name' => 'description',
+                'label' => 'Mô tả',
+                'type' => 'textarea',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12'
+                ],
+                'attributes' => [
+                    'rows' => 5,
+                ]
+            ],
+            [
+                'name' => 'status',
+                'label' => 'Trạng thái nhóm',
+                'type' => 'radio',
+                'options'     => [
+                    0 => "Chưa đi vào hoạt động",
+                    1 => "Đang hoạt động"
+                ],
+                'default'=>1
+            ],
+        ]);
+
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

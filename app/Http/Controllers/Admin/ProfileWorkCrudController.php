@@ -171,9 +171,8 @@ class ProfileWorkCrudController extends CrudController
     {
         CRUD::setValidation(ProfileWorkRequest::class);
 
-//        CRUD::setFromDb(); // fields
         $this->crud->addField([
-            'label' => "Department",
+            'label' => "Phòng ban",
             'type' => 'select',
             'name' => 'department_id',
             'model' => "App\Models\Department",
@@ -181,10 +180,13 @@ class ProfileWorkCrudController extends CrudController
             'options' => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
+            'wrapper'   => [
+                'class'      => 'form-group col-md-4'
+            ],
         ]);
 
         $this->crud->addField([
-            'label' => "Team",
+            'label' => "Đội nhóm",
             'type' => 'select',
             'name' => 'team_id',
             'model' => "App\Models\Team",
@@ -192,34 +194,46 @@ class ProfileWorkCrudController extends CrudController
             'options' => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
+            'wrapper'   => [
+                'class'      => 'form-group col-md-4'
+            ],
         ]);
 
         $this->crud->addField([   // select_from_array
             'name' => 'work_location',
-            'label' => "Work Location",
+            'label' => "Nơi làm việc",
             'type' => 'select_from_array',
-            'options' => ['21.031, 105.783' => 'Hà Nội', '35.682, 139.772' => 'JP', '21.031, 105.785' => 'HCM'],
+            'options' => ['21.031, 105.783' => 'Hà Nội', '35.682, 139.772' => 'Japan', '21.031, 105.785' => 'TP HCM'],
             'allows_null' => false,
             'default' => 'one',
+            'wrapper'   => [
+                'class'      => 'form-group col-md-4'
+            ],
         ]);
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([
             'name' => 'position',
-            'label' => "Position",
+            'label' => "Làm việc với vị trí",
             'type' => 'select_from_array',
             'options' => ['personnel' => 'Personnel', 'manager' => 'Manager', 'ceo' => 'CEO'],
             'allows_null' => false,
             'default' => 'one',
+            'wrapper'   => [
+                'class'      => 'form-group col-md-6'
+            ],
         ]);
 
         $this->crud->addField([
             'name' => 'phone',
             'type' => 'text',
-            'label' => 'Phone',
+            'label' => 'Số điện thoại',
+            'wrapper'   => [
+                'class'      => 'form-group col-md-6'
+            ],
         ]);
         $this->crud->addField([
             'name' => 'address',
             'type' => 'text',
-            'label' => 'Address',
+            'label' => 'Địa chỉ',
         ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:

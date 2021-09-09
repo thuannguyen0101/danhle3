@@ -200,35 +200,39 @@ class RequestCrudController extends CrudController
                 'name' => 'start_date',
                 'type' => 'date_picker',
                 'label' => 'Từ ngày',
-
-                // optional:
                 'date_picker_options' => [
                     'todayBtn' => 'linked',
                     'format' => 'dd-mm-yyyy',
                     'language' => 'vi'
+                ],
+                'wrapper'   => [
+                    'class'      => 'form-group col-md-6'
                 ],
             ],
             [
                 'label' => "Đến ngày",
                 'name' => 'end_date',
                 'type' => 'date_picker',
-
-
-                // optional:
                 'date_picker_options' => [
                     'todayBtn' => 'linked',
                     'format' => 'dd-mm-yyyy',
                     'language' => 'fr'
+                ],
+                'wrapper'   => [
+                    'class'      => 'form-group col-md-6'
                 ],
             ]
         ]);
 
 
         CRUD::setValidation(RequestRequest::class);
-        $this->crud->addField([   // Summernote
+        $this->crud->addField([
                 'name' => 'message',
                 'label' => 'Nội dung',
                 'type' => 'textarea',
+                'attributes' => [
+                    'rows' => 5,
+                ]
             ]
         );
 
