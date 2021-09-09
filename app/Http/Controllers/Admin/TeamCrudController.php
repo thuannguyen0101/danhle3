@@ -74,7 +74,6 @@ class TeamCrudController extends CrudController
         ]);
 
         $this->crud->addColumn([
-
             'label' => 'Phòng',
             'type' => 'select',
             'name' => 'department_id',
@@ -91,33 +90,19 @@ class TeamCrudController extends CrudController
             'attribute' => 'name',
             'model' => "App\Models\User",
         ]);
-
         $this->crud->addColumn([
+            'name' => 'description',
             'label' => "Mô Tả",
             'type' => 'text'
         ]);
 
         $this->crud->addColumn([
             'name' => 'status',
-            'label' => "Status",
-            'type' => 'boolean',
-            'options' => [0 => 'Inactive', 1 => 'Active']
-        ]);
-
-
-        $this->crud->addFilter([
-            'type' => 'text',
-            'name' => 'description',
-            'label' => 'Description'
-        ],
-            false,
-            function ($value) {
-                $this->crud->addClause('where', 'description', 'LIKE', "%$value%");
-            });
             'label' => "Trạng Thái",
             'type' => 'boolean',
             'options' => [0 => 'Ngừng Hoạt Động', 1 => 'Đang Hoạt Động']
         ]);
+
         $this->crud->addFilter([
             'name' => 'name',
             'type' => 'dropdown',
@@ -203,11 +188,11 @@ class TeamCrudController extends CrudController
                 'name' => 'status',
                 'label' => 'Trạng thái nhóm',
                 'type' => 'radio',
-                'options'     => [
+                'options' => [
                     0 => "Chưa đi vào hoạt động",
                     1 => "Đang hoạt động"
                 ],
-                'default'=>1
+                'default' => 1
             ],
         ]);
 
