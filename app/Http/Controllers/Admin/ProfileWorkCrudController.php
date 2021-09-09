@@ -85,10 +85,11 @@ class ProfileWorkCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->addClause('with','teamDetail.team');
+
         $this->crud->addFilter([
             'type' => 'text',
             'name' => 'employee',
-            'label' => 'Search by name Employee'
+            'label' => 'Tìm theo tên nhân viên'
         ],
             false,
             function ($value) {
@@ -97,19 +98,21 @@ class ProfileWorkCrudController extends CrudController
                 });
             }
         );
+
         $this->crud->addFilter([
             'name' => 'name',
             'type' => 'dropdown',
-            'label' => 'Name Department'
+            'label' => 'Tìm theo phòng'
         ], function () {
             return \App\Models\Department::all()->pluck('name', 'id')->toArray();
         }, function ($value) {
             $this->crud->addClause('where', 'department_id', $value);
         });
+
         $this->crud->addFilter([
             'name' => 'team',
             'type' => 'dropdown',
-            'label' => 'Team'
+            'label' => 'Tìm theo nhóm'
         ], function () {
             return \App\Models\Team::all()->pluck('name', 'id')->toArray();
         }, function ($value) {
@@ -117,8 +120,9 @@ class ProfileWorkCrudController extends CrudController
                 $query->where('team_id', $value);
             } );
         });
+
         CRUD::addColumn([
-            'label' => "Employee",
+            'label' => "Tên Nhân Viên",
             'type' => 'select',
             'name' => 'employee_id',
             'entity' => 'employee',
@@ -126,7 +130,7 @@ class ProfileWorkCrudController extends CrudController
             'attribute' => 'name',
         ]);
         CRUD::addColumn([
-            'label' => "Department",
+            'label' => "Phòng",
             'type' => 'select',
             'name' => 'department_id',
             'entity' => 'department',
@@ -135,37 +139,26 @@ class ProfileWorkCrudController extends CrudController
         ]);
 
         CRUD::addColumn([
-            'label' => "Position",
+            'label' => "Chức Vụ",
             'type' => 'text',
             'name' => 'position',
         ]);
         CRUD::addColumn([
-            'label' => "Team",
+            'label' => "Nhóm",
             'type' => 'text',
             'name' => 'teamDetail.team.name',
         ]);
         CRUD::addColumn([
-            'label' => "Phone",
+            'label' => "Số Điện Thoại",
             'type' => 'text',
             'name' => 'phone',
         ]);
         CRUD::addColumn([
-            'label' => "Address",
+            'label' => "Địa Chỉ",
             'type' => 'text',
             'name' => 'address',
         ]);
-        CRUD::addColumn([
-            'label' => "Work location",
-            'type' => 'text',
-            'name' => 'work_location',
-        ]);
 
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
     }
 
     /**

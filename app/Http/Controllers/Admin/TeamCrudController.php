@@ -66,14 +66,16 @@ class TeamCrudController extends CrudController
     protected
     function setupListOperation()
     {
+
         $this->crud->addColumn([
             'name' => 'name',
-            'label' => "Name",
+            'label' => "Tên Nhóm",
             'type' => 'text'
         ]);
 
         $this->crud->addColumn([
-            'label' => 'Department',
+
+            'label' => 'Phòng',
             'type' => 'select',
             'name' => 'department_id',
             'entity' => 'department',
@@ -82,7 +84,7 @@ class TeamCrudController extends CrudController
         ]);
 
         $this->crud->addColumn([
-            'label' => 'Leader',
+            'label' => 'Trưởng Nhóm',
             'type' => 'select',
             'name' => 'leader_id',
             'entity' => 'leader',
@@ -91,8 +93,7 @@ class TeamCrudController extends CrudController
         ]);
 
         $this->crud->addColumn([
-            'name' => 'description',
-            'label' => "Description",
+            'label' => "Mô Tả",
             'type' => 'text'
         ]);
 
@@ -113,11 +114,14 @@ class TeamCrudController extends CrudController
             function ($value) {
                 $this->crud->addClause('where', 'description', 'LIKE', "%$value%");
             });
-
+            'label' => "Trạng Thái",
+            'type' => 'boolean',
+            'options' => [0 => 'Ngừng Hoạt Động', 1 => 'Đang Hoạt Động']
+        ]);
         $this->crud->addFilter([
             'name' => 'name',
             'type' => 'dropdown',
-            'label' => 'Name Department'
+            'label' => 'Tìm theo tên phòng'
         ], function () {
             return \App\Models\Department::all()->pluck('name', 'id')->toArray();
         }, function ($value) {
@@ -127,7 +131,7 @@ class TeamCrudController extends CrudController
         $this->crud->addFilter([
             'type' => 'text',
             'name' => 'leader',
-            'label' => 'Search by name Leader'
+            'label' => 'Tìm theo tên trưởng nhóm'
         ],
             false,
             function ($value) {
@@ -136,13 +140,6 @@ class TeamCrudController extends CrudController
                 });
             }
         );
-
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
     }
 
     /**

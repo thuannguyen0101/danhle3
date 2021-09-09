@@ -44,7 +44,7 @@ class DepartmentCrudController extends CrudController
         $this->crud->addFilter([
             'type' => 'text',
             'name' => 'manager',
-            'label' => 'Search by name Manager'
+            'label' => 'Tìm theo tền trưởng phòng'
         ],
             false,
             function ($value) {
@@ -56,12 +56,13 @@ class DepartmentCrudController extends CrudController
         $this->crud->addFilter([
             'name' => 'name',
             'type' => 'dropdown',
-            'label' => 'Name Department'
+            'label' => 'Tìm theo tên phòng'
         ],function() {
             return \App\Models\Department::all()->pluck('name', 'name')->toArray();
         }, function ($value) { //
             $this->crud->addClause('where', 'name', $value);
         });
+
         CRUD::addColumn([
             'label' => "Trường phòng",
             'type' => 'select',
