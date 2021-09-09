@@ -196,6 +196,9 @@ class RequestCrudController extends CrudController
                     'format' => 'dd-mm-yyyy',
                     'language' => 'vi'
                 ],
+                'wrapper'   => [
+                    'class'      => 'form-group col-md-6'
+                ],
             ],
             [
                 'label' => "Đến ngày",
@@ -206,6 +209,9 @@ class RequestCrudController extends CrudController
                     'format' => 'dd-mm-yyyy',
                     'language' => 'fr'
                 ],
+                'wrapper'   => [
+                    'class'      => 'form-group col-md-6'
+                ],
             ]
         ]);
 
@@ -214,6 +220,9 @@ class RequestCrudController extends CrudController
                 'name' => 'message',
                 'label' => 'Nội dung',
                 'type' => 'textarea',
+                'attributes' => [
+                    'rows' => 5,
+                ]
             ]
         );
 

@@ -104,18 +104,27 @@ class DepartmentCrudController extends CrudController
             'options' => (function ($query) {
                 return $query->orderBy('name', 'ASC')->get();
             }),
+            'wrapper'   => [
+                'class'      => 'form-group col-md-6'
+            ],
         ]);
 
         CRUD::addField([
             'name'  => 'name',
             'type'  => 'text',
             'label' => 'Tên phòng',
+            'wrapper'   => [
+                'class'      => 'form-group col-md-6'
+            ],
         ]);
 
         CRUD::addField([
             'name'  => 'description',
-            'type'  => 'text',
+            'type'  => 'textarea',
             'label' => 'Mô tả phòng ban',
+            'attributes' => [
+                'rows' => 5,
+            ]
         ]);
 
     }

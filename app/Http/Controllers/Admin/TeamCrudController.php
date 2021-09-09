@@ -139,7 +139,64 @@ class TeamCrudController extends CrudController
     {
         CRUD::setValidation(TeamRequest::class);
 
-        CRUD::setFromDb(); // fields
+        $this->crud->addFields([
+            [
+                'name' => 'name',
+                'label' => 'Tên nhóm',
+                'type' => 'text',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12'
+                ],
+            ],
+            [
+                'label' => "Trường Phòng",
+                'type' => 'select',
+                'name' => 'leader_id',
+                'model' => "App\Models\User",
+                'attribute' => 'name',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
+                ],
+            ],
+            [
+                'label' => "Phòng ban",
+                'type' => 'select',
+                'name' => 'department_id',
+                'model' => "App\Models\Department",
+                'attribute' => 'name',
+                'options' => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->get();
+                }),
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
+                ]
+            ],
+            [
+                'name' => 'description',
+                'label' => 'Mô tả',
+                'type' => 'textarea',
+                'wrapper' => [
+                    'class' => 'form-group col-md-12'
+                ],
+                'attributes' => [
+                    'rows' => 5,
+                ]
+            ],
+            [
+                'name' => 'status',
+                'label' => 'Trạng thái nhóm',
+                'type' => 'radio',
+                'options' => [
+                    0 => "Chưa đi vào hoạt động",
+                    1 => "Đang hoạt động"
+                ],
+                'default' => 1
+            ],
+        ]);
+
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
