@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\TeamRequest;
+use App\Models\SendMail;
 use App\Models\Team;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+
 
 /**
  * Class TeamCrudController
@@ -30,7 +32,7 @@ class TeamCrudController extends CrudController
         }
         $mail_name = 'team' . $str . '@newit.co.jp';
         $mail_name = str_replace(' ', '', $mail_name);
-        $mail = new \App\Models\mail();
+        $mail = new SendMail();
         $mail->mail_name = $mail_name;
         $mail->team_id = $team->id;
         $mail->save();
@@ -117,8 +119,7 @@ class TeamCrudController extends CrudController
             'type' => 'text',
             'name' => 'leader',
             'label' => 'Tìm theo tên trưởng nhóm'
-        ],
-            false,
+        ], false,
             function ($value) {
                 $this->crud->addClause('whereHas', 'leader', function ($query) use ($value) {
                     $query->where('name', 'like', '%' . $value . '%');

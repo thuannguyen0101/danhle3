@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\mail;
+use App\Models\SendMail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
@@ -60,7 +60,7 @@ class MicrosoftController extends Controller
                     $data->name = $user->getDisplayName();
                     $data->microsoft_id = $user->getId();
                     $data->email = $user->getUserPrincipalName();
-                    $mail = new mail();
+                    $mail = new SendMail();
                     $mail->mail_name = $user->getUserPrincipalName();
                     $mail->save();
                     $data->save();

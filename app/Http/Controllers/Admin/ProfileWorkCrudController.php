@@ -1,15 +1,12 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Requests\ProfileWorkRequest;
 use App\Models\ProfileWork;
-use App\Models\Team;
 use App\Models\TeamDetail;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
+
 
 /**
  * Class ProfileWorkCrudController
@@ -49,11 +46,11 @@ class ProfileWorkCrudController extends CrudController
         $team_detail = TeamDetail::where('employee_id',$profile_work->employee_id)->first();
         $profile_work->update($this->crud->getRequest()->all());
         $profile_work->save();
-
         $team_detail->update([
             'team_id'=>$this->crud->getRequest()->team_id
         ]);
         $team_detail->save();
+
         return redirect()->route('profile-work.index');
     }
 
@@ -90,10 +87,9 @@ class ProfileWorkCrudController extends CrudController
             'type' => 'text',
             'name' => 'employee',
             'label' => 'Tìm theo tên nhân viên'
-        ],
-            false,
+        ], false,
             function ($value) {
-                $this->crud->addClause('whereHas', 'employee', function ($query) use ($value) {
+                $this->crud->addClause('whereHas', 'user', function ($query) use ($value) {
                     $query->where('name', 'like', '%' . $value . '%');
                 });
             }
@@ -125,10 +121,11 @@ class ProfileWorkCrudController extends CrudController
             'label' => "Tên Nhân Viên",
             'type' => 'select',
             'name' => 'employee_id',
-            'entity' => 'employee',
+            'entity' => 'user',
             'model' => "App\Models\User",
             'attribute' => 'name',
         ]);
+
         CRUD::addColumn([
             'label' => "Phòng",
             'type' => 'select',
@@ -143,16 +140,19 @@ class ProfileWorkCrudController extends CrudController
             'type' => 'text',
             'name' => 'position',
         ]);
+
         CRUD::addColumn([
             'label' => "Nhóm",
             'type' => 'text',
             'name' => 'teamDetail.team.name',
         ]);
+
         CRUD::addColumn([
             'label' => "Số Điện Thoại",
             'type' => 'text',
             'name' => 'phone',
         ]);
+
         CRUD::addColumn([
             'label' => "Địa Chỉ",
             'type' => 'text',
@@ -189,6 +189,7 @@ class ProfileWorkCrudController extends CrudController
             'label' => "Đội nhóm",
             'type' => 'select',
             'name' => 'team_id',
+            'entity'=> 'teams',
             'model' => "App\Models\Team",
             'attribute' => 'name',
             'options' => (function ($query) {
@@ -199,7 +200,7 @@ class ProfileWorkCrudController extends CrudController
             ],
         ]);
 
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([
             'name' => 'work_location',
             'label' => "Nơi làm việc",
             'type' => 'select_from_array',
@@ -235,11 +236,7 @@ class ProfileWorkCrudController extends CrudController
             'type' => 'text',
             'label' => 'Địa chỉ',
         ]);
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
+
     }
 
     /**
@@ -252,6 +249,7 @@ class ProfileWorkCrudController extends CrudController
     {
         $profile_work = ProfileWork::find($this->crud->getRequest()->id);
         $team_detail = TeamDetail::where('employee_id',$profile_work->employee_id)->get();
+
         $key = $team_detail[0]->team_id;
         $this->crud->addField([
             'label' => "Department",
@@ -276,7 +274,7 @@ class ProfileWorkCrudController extends CrudController
             'default' => "$key",
         ]);
 
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([
             'name' => 'work_location',
             'label' => "Work Location",
             'type' => 'select_from_array',
@@ -284,7 +282,7 @@ class ProfileWorkCrudController extends CrudController
             'allows_null' => false,
             'default' => 'one',
         ]);
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([
             'name' => 'position',
             'label' => "Position",
             'type' => 'select_from_array',
@@ -298,10 +296,12 @@ class ProfileWorkCrudController extends CrudController
             'type' => 'text',
             'label' => 'Phone',
         ]);
+
         $this->crud->addField([
             'name' => 'address',
             'type' => 'text',
             'label' => 'Address',
         ]);
+
     }
 }

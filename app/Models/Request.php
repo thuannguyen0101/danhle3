@@ -35,7 +35,7 @@ class Request extends Model
     |--------------------------------------------------------------------------
     */
     public function mails(){
-        return $this->belongsToMany(mail::class);
+        return $this->belongsToMany(sendMail::class);
     }
     public function user(){
         return $this->belongsTo(User::class,'sender_id');
