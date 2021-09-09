@@ -63,7 +63,7 @@ class DepartmentCrudController extends CrudController
             $this->crud->addClause('where', 'name', $value);
         });
         CRUD::addColumn([
-            'label' => "Manager",
+            'label' => "Trường phòng",
             'type' => 'select',
             'name' => 'manager_id',
             'entity' => 'manager',
@@ -71,12 +71,12 @@ class DepartmentCrudController extends CrudController
             'attribute' => 'name',
         ]);
         CRUD::addColumn([
-            'label' => "Name ",
+            'label' => "Tên phòng",
             'type' => 'text',
             'name' => 'name',
         ]);
         CRUD::addColumn([
-            'label' => "Description",
+            'label' => "Mô tả",
             'type' => 'text',
             'name' => 'description',
         ]);
@@ -99,7 +99,7 @@ class DepartmentCrudController extends CrudController
         CRUD::setValidation(DepartmentRequest::class);
 
         CRUD::addField([
-            'label' => "Manager",
+            'label' => "Trường Phòng",
             'type' => 'select',
             'name' => 'manager_id',
             'entity' => 'manager',
@@ -112,19 +112,14 @@ class DepartmentCrudController extends CrudController
         CRUD::addField([
             'name'  => 'name',
             'type'  => 'text',
-            'label' => 'Name',
+            'label' => 'Tên phòng',
         ]);
         CRUD::addField([
             'name'  => 'description',
             'type'  => 'text',
-            'label' => 'Description',
+            'label' => 'Mô tả phòng ban',
         ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
     /**

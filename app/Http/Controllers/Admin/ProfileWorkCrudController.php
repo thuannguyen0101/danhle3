@@ -9,6 +9,7 @@ use App\Models\TeamDetail;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Mail;
 
 /**
  * Class ProfileWorkCrudController
@@ -26,6 +27,7 @@ class ProfileWorkCrudController extends CrudController
 
     public function store()
     {
+
         $profile_work = new ProfileWork();
         $profile_work->department_id = $this->crud->getRequest()->department_id;
         $profile_work->phone = $this->crud->getRequest()->phone;
