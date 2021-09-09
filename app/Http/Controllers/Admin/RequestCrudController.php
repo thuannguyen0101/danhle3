@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RequestRequest;
-use App\Models\mail;
+use App\Models\SendMail;
 use App\Models\Request;
 use App\Models\TeamDetail;
 use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use mysql_xdevapi\Exception;
+use Illuminate\Support\Facades\Mail;
+
 
 
 /**
@@ -33,21 +34,17 @@ class RequestCrudController extends CrudController
         $request->end_date = $this->crud->getRequest()->end_date;
         $array_mail = array();
         foreach ($this->crud->getRequest()->mail as $sendmail) {
-            $mail = mail::find($sendmail);
+            $mail = SendMail::find($sendmail);
             if ($mail->team_id == null) {
                 $user = User::query()->where('email', $mail->mail_name)->get();
                 $to_name = $user[0]->name;
                 $user_email = $mail->mail_name;
                 array_push($array_mail, $mail->mail_name);
-                try {
-                    \Illuminate\Support\Facades\Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
-                        $message->to($user_email, $to_name)
-                            ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
-                        $message->from(env('MAIL_USERNAME'), 'HRMS');
-                    });
-                } catch (Exception $e) {
-                    continue;
-                }
+                Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
+                    $message->to($user_email, $to_name)
+                        ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
+                    $message->from(env('MAIL_USERNAME'), 'HRMS');
+                });
             } else {
                 $team_detail = TeamDetail::query()->where('team_id', $mail->team_id)->get();
                 foreach ($team_detail as $item) {
@@ -55,15 +52,11 @@ class RequestCrudController extends CrudController
                     if (!in_array($user[0]->email, $array_mail)) {
                         $to_name = $user[0]->name;
                         $user_email = $user[0]->email;
-                        try {
-                            \Illuminate\Support\Facades\Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
-                                $message->to($user_email, $to_name)
-                                    ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
-                                $message->from(env('MAIL_USERNAME'), 'HRMS');
-                            });
-                        } catch (Exception $e) {
-                            continue;
-                        }
+                        Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
+                            $message->to($user_email, $to_name)
+                                ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
+                            $message->from(env('MAIL_USERNAME'), 'HRMS');
+                        });
                     }
                 }
 
@@ -180,13 +173,12 @@ class RequestCrudController extends CrudController
     protected function setupCreateOperation()
     {
 
-
         $this->crud->addField([
             'label' => "Gủi tới",
             'type' => 'select2_multiple',
-            'name' => 'mail',
+            'name' => 'sendMail',
             'entity' => 'mails',
-            'model' => "App\Models\mail",
+            'model' => "App\Models\SendMail",
             'attribute' => 'mail_name',
             'pivot' => true,
             'options' => (function ($query) {
@@ -194,14 +186,11 @@ class RequestCrudController extends CrudController
             }),
         ]);
 
-
         $this->crud->addFields([
             [
                 'name' => 'start_date',
                 'type' => 'date_picker',
                 'label' => 'Từ ngày',
-
-                // optional:
                 'date_picker_options' => [
                     'todayBtn' => 'linked',
                     'format' => 'dd-mm-yyyy',
@@ -212,9 +201,6 @@ class RequestCrudController extends CrudController
                 'label' => "Đến ngày",
                 'name' => 'end_date',
                 'type' => 'date_picker',
-
-
-                // optional:
                 'date_picker_options' => [
                     'todayBtn' => 'linked',
                     'format' => 'dd-mm-yyyy',
@@ -223,9 +209,8 @@ class RequestCrudController extends CrudController
             ]
         ]);
 
-
         CRUD::setValidation(RequestRequest::class);
-        $this->crud->addField([   // Summernote
+        $this->crud->addField([
                 'name' => 'message',
                 'label' => 'Nội dung',
                 'type' => 'textarea',

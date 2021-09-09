@@ -16,19 +16,11 @@ class Department extends Model
     */
 
     protected $table = 'departments';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
-    protected $guarded = ['id'];
-    // protected $fillable = [];
-    // protected $hidden = [];
-    // protected $dates = [];
 
-    public function profileWork(){
-        return $this->hasMany(ProfileWork::class);
-    }
-    public function team(){
-        return $this->hasMany(Team::class);
-    }
+    protected $guarded = ['id'];
+
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -41,7 +33,15 @@ class Department extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function profileWorks(){
+        return $this->hasMany(ProfileWork::class);
+    }
+    public function teams(){
+        return $this->hasMany(Team::class);
+    }
+    public function manager(){
+        return $this->belongsTo(User::class,'manager_id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -59,7 +59,5 @@ class Department extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    public function manager(){
-        return $this->belongsTo(User::class,'manager_id');
-    }
+
 }
