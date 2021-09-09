@@ -29,7 +29,7 @@ class TeamCrudController extends CrudController
         foreach ($unicode as $nonUnicode => $uni) {
             $str = preg_replace("/($uni)/i", $nonUnicode, $str);
         }
-        $mail_name = 'team'.$str.'@newit.co.jp';
+        $mail_name = 'team' . $str . '@newit.co.jp';
         $mail_name = str_replace(' ', '', $mail_name);
         $mail = new \App\Models\mail();
         $mail->mail_name = $mail_name;
@@ -67,69 +67,57 @@ class TeamCrudController extends CrudController
     protected
     function setupListOperation()
     {
-//        CRUD::setFromDb(); // columns
-
 
         $this->crud->addColumn([
-            'label' => 'Department', // Table column heading
+            'name' => 'name',
+            'label' => "Tên Nhóm",
+            'type' => 'text'
+        ]);
+
+        $this->crud->addColumn([
+            'label' => 'Phòng',
             'type' => 'select',
-            'name' => 'department_id', // the column that contains the ID of that connected entity;
-            'entity' => 'department', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\Department", // foreign key model
+            'name' => 'department_id',
+            'entity' => 'department',
+            'attribute' => 'name',
+            'model' => "App\Models\Department",
         ]);
 
         $this->crud->addColumn([
-            'label' => 'Leader', // Table column heading
+            'label' => 'Trưởng Nhóm',
             'type' => 'select',
-            'name' => 'leader_id', // the column that contains the ID of that connected entity;
-            'entity' => 'leader', // the method that defines the relationship in your Model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'model' => "App\Models\User", // foreign key model
+            'name' => 'leader_id',
+            'entity' => 'leader',
+            'attribute' => 'name',
+            'model' => "App\Models\User",
         ]);
         $this->crud->addColumn([
-            'name' => 'name', // the db column name (attribute name)
-            'label' => "Name", // the human-readable label for it
-            'type' => 'text' // the kind of column to show
-        ]);
-        $this->crud->addColumn([
-            'name' => 'description', // the db column name (attribute name)
-            'label' => "Description", // the human-readable label for it
-            'type' => 'text' // the kind of column to show
-        ]);
-
-        $this->crud->addColumn([
-            'name' => 'status', // the db column name (attribute name)
-            'label' => "Status", // the human-readable label for it
-            'type' => 'boolean', // the kind of column to show
-            'options' => [0 => 'Inactive', 1 => 'Active']
-        ]);
-
-
-        $this->crud->addFilter([
-            'type' => 'text',
             'name' => 'description',
-            'label' => 'Description'
-        ],
-            false,
-            function ($value) { // if the filter is active
-                $this->crud->addClause('where', 'description', 'LIKE', "%$value%");
-            });
+            'label' => "Mô Tả",
+            'type' => 'text'
+        ]);
+
+        $this->crud->addColumn([
+            'name' => 'status',
+            'label' => "Trạng Thái",
+            'type' => 'boolean',
+            'options' => [0 => 'Ngừng Hoạt Động', 1 => 'Đang Hoạt Động']
+        ]);
 
         $this->crud->addFilter([
             'name' => 'name',
             'type' => 'dropdown',
-            'label' => 'Name Department'
+            'label' => 'Tìm theo tên phòng'
         ], function () {
             return \App\Models\Department::all()->pluck('name', 'id')->toArray();
-        }, function ($value) { //
+        }, function ($value) {
             $this->crud->addClause('where', 'department_id', $value);
         });
 
         $this->crud->addFilter([
             'type' => 'text',
             'name' => 'leader',
-            'label' => 'Search by name Leader'
+            'label' => 'Tìm theo tên trưởng nhóm'
         ],
             false,
             function ($value) {
@@ -138,13 +126,6 @@ class TeamCrudController extends CrudController
                 });
             }
         );
-
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
     }
 
     /**
@@ -178,7 +159,9 @@ class TeamCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
-    public function unicode(){
+
+    public function unicode()
+    {
         return array(
             'a' => 'á|à|ả|ã|ạ|ă|ắ|ặ|ằ|ẳ|ẵ|â|ấ|ầ|ẩ|ẫ|ậ',
             'd' => 'đ',

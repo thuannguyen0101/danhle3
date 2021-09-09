@@ -11,7 +11,6 @@ use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    // comment test git
     use HasFactory, Notifiable, CrudTrait, HasRoles;
 
     /**
@@ -24,9 +23,6 @@ class User extends Authenticatable
         'email',
     ];
 
-    public function team(){
-//        return $this->
-    }
 
     /**
      * The attributes that should be hidden for serialization.
@@ -48,6 +44,9 @@ class User extends Authenticatable
     ];
     public function departments(){
         return $this->hasOne(Department::class,'id');
+    }
+    public function requests(){
+        return $this->hasMany(Request::class);
     }
     public function profile_word(){
         return $this->hasOne(ProfileWork::class,'id');

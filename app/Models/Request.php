@@ -34,15 +34,18 @@ class Request extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function mails(){
+        return $this->belongsToMany(mail::class);
+    }
+    public function user(){
+        return $this->belongsTo(User::class,'sender_id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
-    public function mail(){
-        return $this->belongsToMany(mail::class);
-    }
+
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS
