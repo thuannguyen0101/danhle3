@@ -9,6 +9,7 @@ use App\Models\TeamDetail;
 use App\Models\User;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use mysql_xdevapi\Exception;
 
 
 /**
@@ -26,22 +27,52 @@ class RequestCrudController extends CrudController
     {
         $request = new Request();
         $request->sender_id = backpack_user()->id;
-        $request->request_type = $this->crud->getRequest()->request_type;
         $request->message = $this->crud->getRequest()->message;
         $request->state = 1;
-        $request->save();
-        $team_detail = TeamDetail::query()->where('team_id', $this->crud->getRequest()->team_id)->get();
-        foreach ($team_detail as $item) {
-            $user = User::query()->where('id', $item->employee_id)->get();
-            $data = $this->crud->getRequest()->message;
-            $to_name = $user[0]->name;
-            $user_email = $user[0]->email;
-            Mail::send('mails.demo_mail', ['request_type' => $this->crud->getRequest()->request_type, 'email' => backpack_user()->email, 'msg' => $data, 'user' => backpack_user()->name], function ($message) use ($to_name, $user_email) {
-                $message->to($user_email, $to_name)
-                    ->subject('HRMS Mail');
-                $message->from(env('MAIL_USERNAME'), 'HRMS');
-            });
+        $request->start_date = $this->crud->getRequest()->start_date;
+        $request->end_date = $this->crud->getRequest()->end_date;
+        $array_mail= array();
+        foreach ($this->crud->getRequest()->mail as $sendmail) {
+            $mail = mail::find($sendmail);
+            if ($mail->team_id == null) {
+                $user = User::query()->where('email', $mail->mail_name)->get();
+                $to_name = $user[0]->name;
+                $user_email = $mail->mail_name;
+                array_push($array_mail,$mail->mail_name);
+                try {
+                    \Illuminate\Support\Facades\Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
+                        $message->to($user_email, $to_name)
+                            ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
+                        $message->from(env('MAIL_USERNAME'), 'HRMS');
+                    });
+                }
+                catch (Exception $e){
+                    continue;
+                }
+            } else {
+                $team_detail = TeamDetail::query()->where('team_id', $mail->team_id)->get();
+                foreach ($team_detail as $item) {
+                    $user = User::query()->where('id', $item->employee_id)->get();
+                    if (!in_array($user[0]->email,$array_mail)){
+                        $to_name = $user[0]->name;
+                        $user_email = $user[0]->email;
+                        try {
+                            \Illuminate\Support\Facades\Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
+                                $message->to($user_email, $to_name)
+                                    ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
+                                $message->from(env('MAIL_USERNAME'), 'HRMS');
+                            });
+                        }
+                        catch (Exception $e){
+                            continue;
+                        }
+                    }
+                }
+
+            }
         }
+        $request->save();
+
         return redirect()->route('request.index');
     }
 
@@ -94,7 +125,7 @@ class RequestCrudController extends CrudController
         $this->crud->addField([
             'label' => "Gủi tới",
             'type' => 'select2_multiple',
-            'name' => 'tags',
+            'name' => 'mail',
             'entity' => 'mail',
             'model' => "App\Models\mail",
             'attribute' => 'mail_name',
@@ -107,14 +138,29 @@ class RequestCrudController extends CrudController
 
         $this->crud->addFields([
             [
-                'label' => "Bắt đầu nghỉ từ ngày",
-                'type' => 'date',
                 'name' => 'start_date',
+                'type' => 'date_picker',
+                'label' => 'Từ ngày',
+
+                // optional:
+                'date_picker_options' => [
+                    'todayBtn' => 'linked',
+                    'format' => 'dd-mm-yyyy',
+                    'language' => 'vi'
+                ],
             ],
             [
                 'label' => "Đến ngày",
-                'type' => 'date',
                 'name' => 'end_date',
+                'type' => 'date_picker',
+
+
+                // optional:
+                'date_picker_options' => [
+                    'todayBtn' => 'linked',
+                    'format' => 'dd-mm-yyyy',
+                    'language' => 'fr'
+                ],
             ]
         ]);
 
