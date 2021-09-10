@@ -43,7 +43,7 @@ class RequestCrudController extends CrudController
                     \Illuminate\Support\Facades\Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
                         $message->to($user_email, $to_name)
                             ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
-                        $message->from(env('MAIL_USERNAME'), 'HRMS');
+                        $message->from(config('mail.mailers.smtp.username'), 'HRMS');
                     });
                 } catch (Exception $e) {
                     continue;
@@ -59,7 +59,7 @@ class RequestCrudController extends CrudController
                             \Illuminate\Support\Facades\Mail::send('mails.demo_mail', ['user' => $user[0], 'content' => $this->crud->getRequest()], function ($message) use ($to_name, $user_email) {
                                 $message->to($user_email, $to_name)
                                     ->subject('ĐƠN XIN NGHỈ PHÉP CỦA :' . backpack_user()->name);
-                                $message->from(env('MAIL_USERNAME'), 'HRMS');
+                                $message->from(config('mail.mailers.smtp.username'), 'HRMS');
                             });
                         } catch (Exception $e) {
                             continue;
@@ -73,7 +73,6 @@ class RequestCrudController extends CrudController
 
         return redirect()->route('request.index');
     }
-
 
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;

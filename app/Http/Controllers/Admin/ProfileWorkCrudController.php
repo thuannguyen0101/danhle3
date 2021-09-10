@@ -4,12 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\ProfileWorkRequest;
 use App\Models\ProfileWork;
-use App\Models\Team;
 use App\Models\TeamDetail;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Mail;
 
 /**
  * Class ProfileWorkCrudController

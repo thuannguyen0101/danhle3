@@ -23,13 +23,6 @@ class Department extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    public function profileWork(){
-        return $this->hasMany(ProfileWork::class);
-    }
-    public function team(){
-        return $this->hasMany(Team::class);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -41,7 +34,15 @@ class Department extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function profileWork(){
+        return $this->hasMany(ProfileWork::class);
+    }
+    public function team(){
+        return $this->hasMany(Team::class);
+    }
+    public function manager(){
+        return $this->belongsTo(User::class,'manager_id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -59,7 +60,5 @@ class Department extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    public function manager(){
-        return $this->belongsTo(User::class,'manager_id');
-    }
+
 }
