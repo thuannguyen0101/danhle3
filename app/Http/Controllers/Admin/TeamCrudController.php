@@ -1,14 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
-
 use App\Http\Requests\TeamRequest;
 use App\Models\SendMail;
 use App\Models\Team;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
-
 /**
  * Class TeamCrudController
  * @package App\Http\Controllers\Admin
@@ -16,8 +13,25 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class TeamCrudController extends CrudController
 {
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
+    }
+
+    /**
+     * Configure the CrudPanel object. Apply settings to all operations.
+     *
+     * @return void
+     */
+    public function setup()
+    {
+        CRUD::setModel(\App\Models\Team::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/team');
+        CRUD::setEntityNameStrings('team', 'teams');
     }
 
     public function store()
@@ -39,36 +53,14 @@ class TeamCrudController extends CrudController
         return redirect()->route('user.index');
     }
 
-
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
-    public
-    function setup()
-    {
-        CRUD::setModel(\App\Models\Team::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/team');
-        CRUD::setEntityNameStrings('team', 'teams');
-    }
-
     /**
      * Define what happens when the List operation is loaded.
      *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
-    protected
-    function setupListOperation()
+    protected function setupListOperation()
     {
-
         $this->crud->addColumn([
             'name' => 'name',
             'label' => "Tên Nhóm",
@@ -134,8 +126,7 @@ class TeamCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
-    protected
-    function setupCreateOperation()
+    protected function setupCreateOperation()
     {
         CRUD::setValidation(TeamRequest::class);
 
@@ -196,13 +187,6 @@ class TeamCrudController extends CrudController
                 'default' => 1
             ],
         ]);
-
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
-         */
     }
 
     /**
@@ -211,8 +195,7 @@ class TeamCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-    protected
-    function setupUpdateOperation()
+    protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
     }

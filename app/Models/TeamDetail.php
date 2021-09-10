@@ -16,10 +16,7 @@ class TeamDetail extends Model
     */
 
     protected $table = 'team_details';
-
     protected $guarded = ['id'];
-
-
 
     /*
     |--------------------------------------------------------------------------
@@ -35,12 +32,15 @@ class TeamDetail extends Model
     public function profileWork(){
         return $this->belongsTo(ProfileWork::class,'employee_id');
     }
+
     public function team(){
         return $this->belongsTo(Team::class,'team_id');
     }
+
     public function user(){
         return $this->belongsTo(User::class,'employee_id');
     }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

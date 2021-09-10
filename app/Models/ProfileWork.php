@@ -16,11 +16,7 @@ class ProfileWork extends Model
     */
 
     protected $table = 'profile_works';
-
     protected $guarded = ['id'];
-
-
-
 
     /*
     |--------------------------------------------------------------------------
@@ -33,18 +29,23 @@ class ProfileWork extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
     public function department(){
         return $this->belongsTo(Department::class,'department_id');
     }
+
     public function user(){
         return $this->belongsTo(User::class,'employee_id');
     }
+
     public function teamDetail(){
         return $this->belongsTo(TeamDetail::class,'employee_id');
     }
+
     public function teams(){
         return $this->belongsToMany(Team::class);
     }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

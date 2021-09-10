@@ -20,8 +20,25 @@ use Illuminate\Support\Facades\Mail;
  */
 class RequestCrudController extends CrudController
 {
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
+    }
+
+    /**
+     * Configure the CrudPanel object. Apply settings to all operations.
+     *
+     * @return void
+     */
+    public function setup()
+    {
+        CRUD::setModel(\App\Models\Request::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/request');
+        CRUD::setEntityNameStrings('request', 'requests');
     }
 
     public function store()
@@ -67,25 +84,6 @@ class RequestCrudController extends CrudController
         return redirect()->route('request.index');
     }
 
-
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-
-    /**
-     * Configure the CrudPanel object. Apply settings to all operations.
-     *
-     * @return void
-     */
-    public function setup()
-    {
-        CRUD::setModel(\App\Models\Request::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/request');
-        CRUD::setEntityNameStrings('request', 'requests');
-    }
-
     /**
      * Define what happens when the List operation is loaded.
      *
@@ -94,7 +92,6 @@ class RequestCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-
         $this->crud->addFilter([
             'type' => 'text',
             'name' => 'employee',
@@ -161,7 +158,6 @@ class RequestCrudController extends CrudController
             'type' => 'text',
 
         ]);
-
     }
 
     /**
@@ -172,7 +168,6 @@ class RequestCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-
         $this->crud->addField([
             'label' => "Gủi tới",
             'type' => 'select2_multiple',

@@ -22,9 +22,7 @@ class ProfileWordRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -34,9 +32,7 @@ class ProfileWordRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -46,7 +42,6 @@ class ProfileWordRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-        ];
+        return [];
     }
 }

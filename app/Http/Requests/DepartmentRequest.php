@@ -12,7 +12,6 @@ class DepartmentRequest extends FormRequest
      */
     public function authorize()
     {
-
         return backpack_auth()->check();
     }
 
@@ -23,9 +22,7 @@ class DepartmentRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -35,9 +32,7 @@ class DepartmentRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -47,8 +42,6 @@ class DepartmentRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-
-        ];
+        return [];
     }
 }

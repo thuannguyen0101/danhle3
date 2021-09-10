@@ -22,9 +22,7 @@ class MailRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -34,9 +32,7 @@ class MailRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -46,8 +42,6 @@ class MailRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-
-        ];
+        return [];
     }
 }
