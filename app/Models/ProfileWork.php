@@ -19,9 +19,6 @@ class ProfileWork extends Model
 
     protected $guarded = ['id'];
 
-
-
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

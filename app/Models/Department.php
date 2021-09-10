@@ -18,10 +18,7 @@ class Department extends Model
     protected $table = 'departments';
 
     protected $guarded = ['id'];
-
-
-
-
+  
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -36,9 +33,11 @@ class Department extends Model
     public function profileWorks(){
         return $this->hasMany(ProfileWork::class);
     }
+  
     public function teams(){
         return $this->hasMany(Team::class);
     }
+  
     public function manager(){
         return $this->belongsTo(User::class,'manager_id');
     }

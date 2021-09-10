@@ -67,7 +67,6 @@ class RequestCrudController extends CrudController
         return redirect()->route('request.index');
     }
 
-
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
