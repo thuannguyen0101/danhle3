@@ -14,16 +14,9 @@ class Team extends Model
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
-
     protected $table = 'teams';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
+
     protected $guarded = ['id'];
-    // protected $fillable = [];
-    // protected $hidden = [];
-    // protected $dates = [];
-
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -35,12 +28,15 @@ class Team extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function teamDeatil(){
+
+    public function teamDeatils(){
         return $this->hasMany(TeamDetail::class);
     }
+  
     public function department(){
         return $this->belongsTo(Department::class,'department_id');
     }
+  
     public function leader(){
         return $this->belongsTo(User::class,'leader_id');
     }

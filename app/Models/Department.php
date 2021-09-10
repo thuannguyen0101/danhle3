@@ -16,13 +16,9 @@ class Department extends Model
     */
 
     protected $table = 'departments';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
-    protected $guarded = ['id'];
-    // protected $fillable = [];
-    // protected $hidden = [];
-    // protected $dates = [];
 
+    protected $guarded = ['id'];
+  
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -34,12 +30,14 @@ class Department extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function profileWork(){
+    public function profileWorks(){
         return $this->hasMany(ProfileWork::class);
     }
-    public function team(){
+  
+    public function teams(){
         return $this->hasMany(Team::class);
     }
+  
     public function manager(){
         return $this->belongsTo(User::class,'manager_id');
     }

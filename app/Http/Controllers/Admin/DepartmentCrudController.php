@@ -39,27 +39,25 @@ class DepartmentCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->addClause('where', 'id', 1);
-        // simple filter
         $this->crud->addFilter([
             'type' => 'text',
             'name' => 'manager',
             'label' => 'Tìm theo tền trưởng phòng'
-        ],
-            false,
+        ], false,
             function ($value) {
                 $this->crud->addClause('whereHas','manager',function($query) use ($value){
                     $query->where('name','like', '%'.$value.'%');
                 } );
             }
         );
+
         $this->crud->addFilter([
             'name' => 'name',
             'type' => 'dropdown',
             'label' => 'Tìm theo tên phòng'
         ],function() {
             return \App\Models\Department::all()->pluck('name', 'name')->toArray();
-        }, function ($value) { //
+        }, function ($value) {
             $this->crud->addClause('where', 'name', $value);
         });
 
@@ -71,22 +69,19 @@ class DepartmentCrudController extends CrudController
             'model' => "App\Models\User",
             'attribute' => 'name',
         ]);
+
         CRUD::addColumn([
             'label' => "Tên phòng",
             'type' => 'text',
             'name' => 'name',
         ]);
+
         CRUD::addColumn([
             'label' => "Mô tả",
             'type' => 'text',
             'name' => 'description',
         ]);
 
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
-         */
     }
 
     /**
@@ -113,6 +108,7 @@ class DepartmentCrudController extends CrudController
                 'class'      => 'form-group col-md-6'
             ],
         ]);
+
         CRUD::addField([
             'name'  => 'name',
             'type'  => 'text',
@@ -121,6 +117,7 @@ class DepartmentCrudController extends CrudController
                 'class'      => 'form-group col-md-6'
             ],
         ]);
+
         CRUD::addField([
             'name'  => 'description',
             'type'  => 'textarea',

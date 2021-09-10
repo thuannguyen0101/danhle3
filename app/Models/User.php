@@ -23,7 +23,6 @@ class User extends Authenticatable
         'email',
     ];
 
-
     /**
      * The attributes that should be hidden for serialization.
      *
@@ -42,13 +41,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
-    public function departments(){
+    public function department(){
         return $this->hasOne(Department::class,'id');
     }
     public function requests(){
         return $this->hasMany(Request::class);
     }
-    public function profile_word(){
+    public function profileWord(){
         return $this->hasOne(ProfileWork::class,'id');
     }
 }

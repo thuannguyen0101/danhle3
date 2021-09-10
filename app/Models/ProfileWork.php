@@ -16,12 +16,8 @@ class ProfileWork extends Model
     */
 
     protected $table = 'profile_works';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
+
     protected $guarded = ['id'];
-    // protected $fillable = [];
-    // protected $hidden = [];
-    // protected $dates = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -37,16 +33,15 @@ class ProfileWork extends Model
     public function department(){
         return $this->belongsTo(Department::class,'department_id');
     }
-    public function employee(){
+    public function user(){
         return $this->belongsTo(User::class,'employee_id');
     }
     public function teamDetail(){
         return $this->belongsTo(TeamDetail::class,'employee_id');
     }
-    public function team(){
+    public function teams(){
         return $this->belongsToMany(Team::class);
     }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES
