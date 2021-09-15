@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Requests\ProfileWorkRequest;
+use App\Models\Department;
 use App\Models\ProfileWork;
+use App\Models\Team;
 use App\Models\TeamDetail;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+
 
 
 /**
@@ -15,51 +18,17 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
  */
 class ProfileWorkCrudController extends CrudController
 {
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation {
         store as traitStore;
     }
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation {
         update as traitUpdate;
     }
-
-    public function store()
-    {
-
-        $profile_work = new ProfileWork();
-        $profile_work->department_id = $this->crud->getRequest()->department_id;
-        $profile_work->phone = $this->crud->getRequest()->phone;
-        $profile_work->address = $this->crud->getRequest()->address;
-        $profile_work->work_location = $this->crud->getRequest()->work_location;
-        $profile_work->position = $this->crud->getRequest()->position;
-        $profile_work->employee_id = backpack_user()->id;
-        $profile_work->save();
-        $team_detail = new TeamDetail();
-        $team_detail->team_id = $this->crud->getRequest()->team_id;
-        $team_detail->employee_id = backpack_user()->id;
-        $team_detail->save();
-        return redirect()->route('profile-work.index');
-    }
-
-    public function update()
-    {
-        $profile_work = ProfileWork::find($this->crud->getRequest()->id);
-        $team_detail = TeamDetail::where('employee_id',$profile_work->employee_id)->first();
-        $profile_work->update($this->crud->getRequest()->all());
-        $profile_work->save();
-        $team_detail->update([
-            'team_id'=>$this->crud->getRequest()->team_id
-        ]);
-        $team_detail->save();
-
-        return redirect()->route('profile-work.index');
-    }
-
-
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -71,6 +40,37 @@ class ProfileWorkCrudController extends CrudController
         CRUD::setModel(\App\Models\ProfileWork::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/profile-work');
         CRUD::setEntityNameStrings('profile work', 'profile works');
+    }
+
+    public function store()
+    {
+        $profileWork = new ProfileWork();
+        $profileWork->department_id = $this->crud->getRequest()->department_id;
+        $profileWork->phone = $this->crud->getRequest()->phone;
+        $profileWork->address = $this->crud->getRequest()->address;
+        $profileWork->work_location = $this->crud->getRequest()->work_location;
+        $profileWork->position = $this->crud->getRequest()->position;
+        $profileWork->employee_id = backpack_user()->id;
+        $profileWork->save();
+        $teamDetail = new TeamDetail();
+        $teamDetail->team_id = $this->crud->getRequest()->team_id;
+        $teamDetail->employee_id = backpack_user()->id;
+        $teamDetail->save();
+        return redirect()->route('profile-work.index');
+    }
+
+    public function update()
+    {
+        $profileWork = ProfileWork::find($this->crud->getRequest()->id);
+        $teamDetail = TeamDetail::where('employee_id',$profileWork->employee_id)->first();
+        $profileWork->update($this->crud->getRequest()->all());
+        $profileWork->save();
+        $teamDetail->update([
+            'team_id'=>$this->crud->getRequest()->team_id
+        ]);
+        $teamDetail->save();
+
+        return redirect()->route('profile-work.index');
     }
 
     /**
@@ -100,7 +100,7 @@ class ProfileWorkCrudController extends CrudController
             'type' => 'dropdown',
             'label' => 'Tìm theo phòng'
         ], function () {
-            return \App\Models\Department::all()->pluck('name', 'id')->toArray();
+            return Department::all()->pluck('name', 'id')->toArray();
         }, function ($value) {
             $this->crud->addClause('where', 'department_id', $value);
         });
@@ -110,7 +110,7 @@ class ProfileWorkCrudController extends CrudController
             'type' => 'dropdown',
             'label' => 'Tìm theo nhóm'
         ], function () {
-            return \App\Models\Team::all()->pluck('name', 'id')->toArray();
+            return Team::all()->pluck('name', 'id')->toArray();
         }, function ($value) {
             $this->crud->addClause('whereHas','teamDetail',function($query) use ($value){
                 $query->where('team_id', $value);
@@ -211,6 +211,7 @@ class ProfileWorkCrudController extends CrudController
                 'class'      => 'form-group col-md-4'
             ],
         ]);
+
         $this->crud->addField([
             'name' => 'position',
             'label' => "Làm việc với vị trí",
@@ -231,6 +232,7 @@ class ProfileWorkCrudController extends CrudController
                 'class'      => 'form-group col-md-6'
             ],
         ]);
+
         $this->crud->addField([
             'name' => 'address',
             'type' => 'text',
@@ -247,10 +249,10 @@ class ProfileWorkCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $profile_work = ProfileWork::find($this->crud->getRequest()->id);
-        $team_detail = TeamDetail::where('employee_id',$profile_work->employee_id)->get();
+        $profileWork = ProfileWork::find($this->crud->getRequest()->id);
+        $teamDetail = TeamDetail::where('employee_id',$profileWork->employee_id)->get();
 
-        $key = $team_detail[0]->team_id;
+        $key = $teamDetail[0]->team_id;
         $this->crud->addField([
             'label' => "Department",
             'type' => 'select',

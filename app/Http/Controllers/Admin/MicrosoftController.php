@@ -12,7 +12,7 @@ use Microsoft\Graph\Graph;
 
 class MicrosoftController extends Controller
 {
-    public function ms_login(){
+    public function msLogin(){
         $oauthClient = new GenericProvider([
             'clientId' => config('azure.appId'),
             'clientSecret' => config('azure.appSecret'),
@@ -24,12 +24,12 @@ class MicrosoftController extends Controller
         ]);
         $authUrl = $oauthClient->getAuthorizationUrl();
         session(['oauthState' => $oauthClient->getState()]);
+
         return redirect()->away($authUrl);
     }
+
     public function callback(Request $request){
-        $expectedState = session('oauthState');
         $request->session()->forget('oauthState');
-        $providedState = $request->query('state');
         $authCode = $request->query('code');
         if (isset($authCode)) {
             $oauthClient = new GenericProvider([
@@ -61,11 +61,12 @@ class MicrosoftController extends Controller
                     $data->microsoft_id = $user->getId();
                     $data->email = $user->getUserPrincipalName();
                     $mail = new SendMail();
-                    $mail->mail_name = $user->getUserPrincipalName();
+                    $mail->mailName = $user->getUserPrincipalName();
                     $mail->save();
                     $data->save();
                 }
                 $this->guard()->login($data);
+
                 return redirect('/admin/');
             } catch (IdentityProviderException $e) {
                 return redirect('/')
@@ -73,6 +74,7 @@ class MicrosoftController extends Controller
                     ->with('errorDetail', json_encode($e->getResponseBody()));
             }
         }
+
         return redirect('/')
             ->with('error', $request->query('error'))
             ->with('errorDetail', $request->query('error_description'));

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\DepartmentRequest;
+use App\Models\Department;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -26,7 +27,7 @@ class DepartmentCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Department::class);
+        CRUD::setModel(Department::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/department');
         CRUD::setEntityNameStrings('department', 'departments');
     }
@@ -56,7 +57,7 @@ class DepartmentCrudController extends CrudController
             'type' => 'dropdown',
             'label' => 'Tìm theo tên phòng'
         ],function() {
-            return \App\Models\Department::all()->pluck('name', 'name')->toArray();
+            return Department::all()->pluck('name', 'name')->toArray();
         }, function ($value) {
             $this->crud->addClause('where', 'name', $value);
         });
@@ -81,7 +82,6 @@ class DepartmentCrudController extends CrudController
             'type' => 'text',
             'name' => 'description',
         ]);
-
     }
 
     /**
@@ -126,7 +126,6 @@ class DepartmentCrudController extends CrudController
                 'rows' => 5,
             ]
         ]);
-
     }
 
     /**

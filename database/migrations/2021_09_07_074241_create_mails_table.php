@@ -15,8 +15,8 @@ class CreateMailsTable extends Migration
     {
         Schema::create('mails', function (Blueprint $table) {
             $table->id();
-            $table->string('mail_name');
-            $table->integer('team_id')->nullable();
+            $table->string('mailName');
+            $table->integer('teamId')->nullable();
             $table->timestamps();
         });
     }

@@ -23,8 +23,7 @@ class RequestRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -34,8 +33,7 @@ class RequestRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -45,7 +43,6 @@ class RequestRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-        ];
+        return [];
     }
 }

@@ -22,8 +22,7 @@ class TeamDetailRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -33,8 +32,7 @@ class TeamDetailRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -44,7 +42,6 @@ class TeamDetailRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-        ];
+        return [];
     }
 }

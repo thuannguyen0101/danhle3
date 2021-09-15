@@ -22,8 +22,7 @@ class ProfileWorkRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -33,9 +32,7 @@ class ProfileWorkRequest extends FormRequest
      */
     public function attributes()
     {
-        return [
-
-        ];
+        return [];
     }
 
     /**
@@ -45,7 +42,6 @@ class ProfileWorkRequest extends FormRequest
      */
     public function messages()
     {
-        return [
-        ];
+        return [];
     }
 }

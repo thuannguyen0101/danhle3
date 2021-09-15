@@ -16,12 +16,7 @@ class Request extends Model
     */
 
     protected $table = 'requests';
-    // protected $primaryKey = 'id';
-    // public $timestamps = false;
     protected $guarded = ['id'];
-    // protected $fillable = [];
-    // protected $hidden = [];
-    // protected $dates = [];
 
     /*
     |--------------------------------------------------------------------------
@@ -34,12 +29,15 @@ class Request extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
     public function mails(){
         return $this->belongsToMany(sendMail::class);
     }
+
     public function user(){
         return $this->belongsTo(User::class,'sender_id');
     }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

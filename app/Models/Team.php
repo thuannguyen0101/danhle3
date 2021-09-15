@@ -14,9 +14,10 @@ class Team extends Model
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
-    protected $table = 'teams';
 
+    protected $table = 'teams';
     protected $guarded = ['id'];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -29,14 +30,14 @@ class Team extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function teamDeatils(){
+    public function teamDetails(){
         return $this->hasMany(TeamDetail::class);
     }
-  
+
     public function department(){
         return $this->belongsTo(Department::class,'department_id');
     }
-  
+
     public function leader(){
         return $this->belongsTo(User::class,'leader_id');
     }

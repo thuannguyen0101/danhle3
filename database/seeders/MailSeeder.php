@@ -16,36 +16,36 @@ class MailSeeder extends Seeder
     {
         DB::table('mails')->insert([
             [
-                'mail_name'=>'teammobile@newit.co.jp',
-                'team_id'=>1,
+                'mailName'=>'teammobile@newit.co.jp',
+                'teamId'=>1,
             ],
             [
-                'mail_name'=>'teamweb@newit.co.jp',
-                'team_id'=>2,
+                'mailName'=>'teamweb@newit.co.jp',
+                'teamId'=>2,
             ],
             [
-                'mail_name'=>'hjnhh18@gmail.com',
-                'team_id'=>null,
+                'mailName'=>'hjnhh18@gmail.com',
+                'teamId'=>null,
             ],
             [
-                'mail_name'=>'nguyenhjnh2002@gmail.com',
-                'team_id'=>null,
+                'mailName'=>'nguyenhjnh2002@gmail.com',
+                'teamId'=>null,
             ],
             [
-                'mail_name'=>'thuandz01012002gmail.com',
-                'team_id'=>null,
+                'mailName'=>'thuandz01012002gmail.com',
+                'teamId'=>null,
             ],
             [
-                'mail_name'=>'thuannnth2009019@fpt.edu.vn',
-                'team_id'=>null,
+                'mailName'=>'thuannnth2009019@fpt.edu.vn',
+                'teamId'=>null,
             ],
             [
-                'mail_name'=>'hjnhh19@gmail.com',
-                'team_id'=>null,
+                'mailName'=>'hjnhh19@gmail.com',
+                'teamId'=>null,
             ],
             [
-                'mail_name'=>'hjnhhjnh2345@gmail.com',
-                'team_id'=>null,
+                'mailName'=>'hjnhhjnh2345@gmail.com',
+                'teamId'=>null,
             ],
 
         ]);
