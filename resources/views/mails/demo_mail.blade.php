@@ -8,9 +8,13 @@
     <title>HRMS thông báo</title>
 </head>
 <body>
-<div style="min-width: 100%;display: flex;justify-content: center;align-items: center">
-
-</div>
+<h1>test</h1>
+@if($url)
+    <div style="min-width: 100%;display: flex;justify-content: center;align-items: center">
+        <button style="background:red; cursor:pointer"><a href="{{$url}}/0">Không đồng ý</a></button>
+        <button style="background:red; cursor:pointer"><a href="{{$url}}/2">Đồng ý</a></button>
+    </div>
+@endif
 </body>
 </html>
 
