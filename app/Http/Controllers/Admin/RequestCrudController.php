@@ -4,10 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RequestRequest;
 use App\Jobs\SendWelcomeEmail;
+use App\Models\Approve;
 use App\Models\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Support\Str;
 
 
 /**
@@ -41,6 +42,7 @@ class RequestCrudController extends CrudController
     public function store()
     {
         $request = new Request();
+        $request->hash = Str::random(6);
         $request->sender_id = backpack_user()->id;
         $request->message = $this->crud->getRequest()->message;
         $request->state = 1;
@@ -48,7 +50,7 @@ class RequestCrudController extends CrudController
         $request->end_date = $this->crud->getRequest()->end_date;
         $request->save();
         $requestData = $this->crud->getRequest();
-        $this->dispatch(new SendWelcomeEmail(collect($requestData)->toArray(),collect(backpack_user())->toArray()));
+        $this->dispatch(new SendWelcomeEmail(collect($requestData)->toArray(), collect(backpack_user())->toArray(),$request->hash));
         return redirect()->route('request.index');
     }
 
@@ -159,8 +161,8 @@ class RequestCrudController extends CrudController
                     'format' => 'dd-mm-yyyy',
                     'language' => 'vi'
                 ],
-                'wrapper'   => [
-                    'class'      => 'form-group col-md-6'
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
                 ],
             ],
             [
@@ -172,8 +174,8 @@ class RequestCrudController extends CrudController
                     'format' => 'dd-mm-yyyy',
                     'language' => 'fr'
                 ],
-                'wrapper'   => [
-                    'class'      => 'form-group col-md-6'
+                'wrapper' => [
+                    'class' => 'form-group col-md-6'
                 ],
             ]
         ]);

@@ -21,11 +21,13 @@ class SendWelcomeEmail implements ShouldQueue
      */
     private $content;
     public $userInfo;
+    public $hash;
 
 //    public function __construct()
-    public function __construct(array $content, array $userInfo)
+    public function __construct(array $content, array $userInfo, $hash)
     {
         $this->content = $content;
+        $this->hash = $hash;
         $this->userInfo = $userInfo;
     }
 
@@ -36,9 +38,8 @@ class SendWelcomeEmail implements ShouldQueue
      */
     public function handle()
     {
-        $arrayMail = (new FormatMail())->invoke($this->content['sendMail']);
-        (new SendMail())->invoke($arrayMail,$this->userInfo,$this->content);
-
+        $arrayMail = (new FormatMail())->invoke($this->content['sendMail'],$this->hash);
+        (new SendMail())->invoke($arrayMail,$this->userInfo,$this->content,$this->hash);
         return 'send mail success';
     }
 
