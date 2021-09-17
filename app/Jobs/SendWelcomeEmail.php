@@ -23,7 +23,6 @@ class SendWelcomeEmail implements ShouldQueue
     public $userInfo;
     public $hash;
 
-//    public function __construct()
     public function __construct(array $content, array $userInfo, $hash)
     {
         $this->content = $content;
@@ -40,6 +39,7 @@ class SendWelcomeEmail implements ShouldQueue
     {
         $arrayMail = (new FormatMail())->invoke($this->content['sendMail'],$this->hash);
         (new SendMail())->invoke($arrayMail,$this->userInfo,$this->content,$this->hash);
+
         return 'send mail success';
     }
 
