@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendBackEmail;
 use App\Models\Approve;
+use App\Models\Request;
+use App\Models\User;
 
 
 class ApproveController extends Controller
@@ -13,12 +16,13 @@ class ApproveController extends Controller
         if ($approve->status == 1 && $choice == 0 || $choice == 2){
             $approve->update(['status'=>$choice]);
             $approve->save();
-            return $approve;
+            $userSendBack = User::find($approve->approve_id);
+            $receiver = User::find(Request::query()->where('hash',$request_id)->first()->sender_id);
+            $this->dispatch(new SendBackEmail(collect($userSendBack)->toArray() , collect($receiver)->toArray() , $choice));
         }
         else{
             return "ban da cap quen rồi";
         }
-
-
+        return User::find(Request::query()->where('hash',$request_id)->first()->sender_id);
     }
 }

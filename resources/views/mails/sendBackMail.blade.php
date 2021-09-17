@@ -1,0 +1,1 @@
+{{$content}} Bởi {{$user['name']}}
