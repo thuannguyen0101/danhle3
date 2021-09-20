@@ -18,13 +18,11 @@ class FormatMail
         $arrayLeader = [];
         foreach ($requestData as $id) {
             $mail = SendMail::find($id);
-            // mang mail co team_id
             if ($mail->team_id == null) {
                 if (!in_array($mail->mail_name, $arrayMail)) {
                     array_push($arrayMail, $mail->mail_name);
                 }
             } else {
-                //team_id
                 $teamDetail = TeamDetail::query()->where('team_id', $mail->team_id)->get();
                 $team = Team::find($mail->team_id);
                 if ($team) {
@@ -38,9 +36,9 @@ class FormatMail
                 }
             }
         }
-        Log::info('A',$arrayMail);
         $data['mail'] = $arrayMail;
         $data['leader'] = $arrayLeader;
+
         return $data;
     }
 }

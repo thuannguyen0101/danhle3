@@ -37,7 +37,7 @@ class ProfileWorkCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\ProfileWork::class);
+        CRUD::setModel(ProfileWork::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/profile-work');
         CRUD::setEntityNameStrings('profile work', 'profile works');
     }

@@ -20,7 +20,7 @@
                 <h1 class="text-center">HRMS</h1>
             </div>
             <div class="card-body text-center ">
-                <div  style="font-size: 100%">
+                <div style="font-size: 100%">
                     <i class='far fa-check-circle' style='font-size:500%;color:green;background: white'></i>
                 </div>
                 @if($choice )
