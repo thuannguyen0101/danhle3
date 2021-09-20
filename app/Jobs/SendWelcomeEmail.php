@@ -9,6 +9,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Traits\FormatMail;
+use Illuminate\Support\Facades\Log;
 
 class SendWelcomeEmail implements ShouldQueue
 {
@@ -38,6 +39,7 @@ class SendWelcomeEmail implements ShouldQueue
     public function handle()
     {
         $arrayMail = (new FormatMail())->invoke($this->content['sendMail'],$this->hash);
+
         (new SendMail())->invoke($arrayMail,$this->userInfo,$this->content,$this->hash);
 
         return 'send mail success';

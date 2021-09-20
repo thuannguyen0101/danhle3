@@ -48,7 +48,7 @@ class TeamCrudController extends CrudController
         $mail_name = 'team' . $str . '@newit.co.jp';
         $mail_name = str_replace(' ', '', $mail_name);
         $mail = new SendMail();
-        $mail->mailName = $mail_name;
+        $mail->mail_name = $mail_name;
         $mail->teamId = $team->id;
         $mail->save();
         return redirect()->route('user.index');

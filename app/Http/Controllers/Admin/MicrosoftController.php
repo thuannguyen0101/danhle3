@@ -61,7 +61,7 @@ class MicrosoftController extends Controller
                     $data->microsoft_id = $user->getId();
                     $data->email = $user->getUserPrincipalName();
                     $mail = new SendMail();
-                    $mail->mailName = $user->getUserPrincipalName();
+                    $mail->mail_name = $user->getUserPrincipalName();
                     $mail->save();
                     $data->save();
                 }

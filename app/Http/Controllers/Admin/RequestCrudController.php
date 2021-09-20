@@ -145,10 +145,10 @@ class RequestCrudController extends CrudController
             'name' => 'sendMail',
             'entity' => 'mails',
             'model' => "App\Models\SendMail",
-            'attribute' => 'mailName',
+            'attribute' => 'mail_name',
             'pivot' => true,
             'options' => (function ($query) {
-                return $query->orderBy('mailName', 'ASC')->get();
+                return $query->orderBy('mail_name', 'ASC')->get();
             }),
         ]);
 
