@@ -14,5 +14,4 @@ class Approve extends Model
         'request_id',
         'status',
     ];
-    protected $primaryKey = 'approve_id';
 }

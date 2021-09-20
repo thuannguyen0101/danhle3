@@ -15,6 +15,7 @@ class CreateApprovesTable extends Migration
     {
         Schema::create('approves', function (Blueprint $table) {
             $table->integer('approve_id');
+            $table->increments('id');
             $table->string('hash');
             $table->string('request_id');
             $table->integer('status')->default(1);

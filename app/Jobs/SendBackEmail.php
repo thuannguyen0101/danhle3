@@ -38,7 +38,7 @@ class SendBackEmail implements ShouldQueue
     public function handle()
     {
         $content = null;
-        if ($this->choice == 2) {
+        if ($this->choice == 3) {
             $content = 'Yêu cầu xin nghỉ của bạn đã được phê duyệt';
         } else {
             $content = 'Yêu cầu xin nghỉ của bạn đã bị từ chối';
