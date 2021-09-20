@@ -34,7 +34,7 @@ class RequestCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Request::class);
+        CRUD::setModel(Request::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/request');
         CRUD::setEntityNameStrings('request', 'requests');
     }
@@ -50,7 +50,8 @@ class RequestCrudController extends CrudController
         $request->end_date = $this->crud->getRequest()->end_date;
         $request->save();
         $requestData = $this->crud->getRequest();
-        $this->dispatch(new SendWelcomeEmail(collect($requestData)->toArray(), collect(backpack_user())->toArray(),$request->hash));
+        $this->dispatch(new SendWelcomeEmail(collect($requestData)->toArray(), collect(backpack_user())->toArray(), $request->hash));
+
         return redirect()->route('request.index');
     }
 
@@ -181,6 +182,7 @@ class RequestCrudController extends CrudController
         ]);
 
         CRUD::setValidation(RequestRequest::class);
+
         $this->crud->addField([
                 'name' => 'message',
                 'label' => 'Nội dung',

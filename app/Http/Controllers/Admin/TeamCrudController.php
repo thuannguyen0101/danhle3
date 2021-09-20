@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 use App\Http\Requests\TeamRequest;
+use App\Models\Department;
 use App\Models\SendMail;
 use App\Models\Team;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -29,7 +30,7 @@ class TeamCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Team::class);
+        CRUD::setModel(Team::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/team');
         CRUD::setEntityNameStrings('team', 'teams');
     }
@@ -102,7 +103,7 @@ class TeamCrudController extends CrudController
             'type' => 'dropdown',
             'label' => 'Tìm theo tên phòng'
         ], function () {
-            return \App\Models\Department::all()->pluck('name', 'id')->toArray();
+            return Department::all()->pluck('name', 'id')->toArray();
         }, function ($value) {
             $this->crud->addClause('where', 'department_id', $value);
         });
