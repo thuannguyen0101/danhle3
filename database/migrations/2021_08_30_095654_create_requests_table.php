@@ -15,7 +15,6 @@ class CreateRequestsTable extends Migration
     {
         Schema::create('requests', function (Blueprint $table) {
             $table->id();
-            $table->string('hash');
             $table->string('sender_id');
             $table->string('request_type')->default('Xin nghỉ phép');
             $table->text('message');

@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'department_id'=>'2',
-                'leader_id'=>'4',
+                'leader_id'=>'5',
                 'name'=>'Web',
                 'description'=>'Web development',
                 'status'=>1,
