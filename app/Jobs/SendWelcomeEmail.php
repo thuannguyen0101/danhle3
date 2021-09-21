@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Log;
 
 class SendWelcomeEmail implements ShouldQueue
 {
-    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels ;
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     /**
      * Create a new job instance.
@@ -38,13 +38,15 @@ class SendWelcomeEmail implements ShouldQueue
      */
     public function handle()
     {
-        $arrayMail = (new FormatMail())->invoke($this->content['sendMail'],$this->hash);
+        try {
+            $arrayMail = (new FormatMail())->invoke($this->content['sendMail'], $this->hash);
+            (new SendMail())->invoke($arrayMail, $this->userInfo, $this->content, $this->hash);
+        } catch (\Exception $e) {
+            Log::error($e);
+        }
 
-        (new SendMail())->invoke($arrayMail,$this->userInfo,$this->content,$this->hash);
-
-        return 'send mail success';
+        return true;
     }
-
 }
 
 

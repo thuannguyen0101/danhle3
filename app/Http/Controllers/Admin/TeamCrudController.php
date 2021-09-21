@@ -46,6 +46,7 @@ class TeamCrudController extends CrudController
             $str = preg_replace("/($uni)/i", $nonUnicode, $str);
         }
         $mail_name = 'team' . $str . '@newit.co.jp';
+        $mail_name = sprintf('team%s@newit.co.jp',$str);
         $mail_name = str_replace(' ', '', $mail_name);
         $mail = new SendMail();
         $mail->mail_name = $mail_name;

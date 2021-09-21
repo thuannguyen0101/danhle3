@@ -29,7 +29,10 @@ class AddMicrosoftIdToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-
+            $table->dropColumn('microsoft_id');
+            $table->string('password');
+            $table->timestamp('email_verified_at');
+            $table->rememberToken();
         });
     }
 }

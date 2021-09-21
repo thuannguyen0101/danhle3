@@ -21,5 +21,4 @@
                     class="nav-icon la la-key"></i> <span>Quyền</span></a></li>
     </ul>
 </li>
-
-<li class='nav-item'><a class='nav-link' href='{{ backpack_url('request') }}'><i class='nav-icon la la-question'></i> Requests</a></li>
+<li class='nav-item'><a class='nav-link' href='{{ backpack_url('timekeeping') }}'><i class='nav-icon la la-question'></i> Chấm công</a></li>

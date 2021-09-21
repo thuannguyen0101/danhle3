@@ -1,7 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\MicrosoftController;
-use App\Http\Controllers\Admin\RequestCrudController;
 use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\JobController;
 use Illuminate\Support\Facades\Route;
@@ -22,7 +21,4 @@ Route::get('/', function () {
 });
 Route::get('/admin/sign-in',[MicrosoftController::class,'msLogin'])->name('ms_login');
 Route::get('/callback',[MicrosoftController::class,'callback'])->name('show_sign_in_view');
-Route::get('/test-email',[JobController::class,'processQueue']);
 Route::get('/approve/{request_id}/{hash}/{choice}',[ApproveController::class,'accept']);
-
-
