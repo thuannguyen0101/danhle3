@@ -26,6 +26,11 @@ class UserSeeder extends Seeder
                 'microsoft_id'=>'09876543234567891',
             ],
             [
+                'name'=>'Nguyen Xuan hjnh',
+                'email'=>'nguyenhjnh2002@gmail.com',
+                'microsoft_id'=>'0987654323450967891',
+            ],
+            [
                 'name'=>'Nguyen Ngoc Thuan DZ',
                 'email'=>'thuandz01012002gmail.com',
                 'microsoft_id'=>'09876543234567893',
