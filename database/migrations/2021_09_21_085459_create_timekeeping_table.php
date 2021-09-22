@@ -17,9 +17,9 @@ class CreateTimekeepingTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id');
             $table->dateTime('start_time');
-            $table->dateTime('end_time');
+            $table->dateTime('end_time')->nullable();
             $table->integer('late_start');
-            $table->double('total_time');
+            $table->double('total_time')->nullable();
             $table->integer('late_attendance');
             $table->timestamps();
         });
