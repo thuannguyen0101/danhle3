@@ -16,7 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             UserSeeder::class,
-            MailSeeder::class
+            MailSeeder::class,
+            TimekeepingSeeder::class
         ]);
         DB::table('departments')->insert([
             [

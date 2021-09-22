@@ -52,4 +52,8 @@ class User extends Authenticatable
     public function profileWord(){
         return $this->hasOne(ProfileWork::class,'id');
     }
+
+    public function timekeepings(){
+        return $this->hasMany(Timekeeping::class);
+    }
 }

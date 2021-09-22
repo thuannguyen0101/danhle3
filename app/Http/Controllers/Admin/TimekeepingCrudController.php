@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\TimekeepingRequest;
+use App\Models\Timekeeping;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -26,9 +27,9 @@ class TimekeepingCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Timekeeping::class);
+        CRUD::setModel(Timekeeping::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/timekeeping');
-        CRUD::setEntityNameStrings('timekeeping', 'timekeepings');
+        CRUD::setEntityNameStrings('timekeeping', 'timekeeping');
     }
 
     /**
@@ -39,8 +40,50 @@ class TimekeepingCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::setFromDb(); // columns
-        $this->crud->removeAllButtons();
+        $this->crud->removeButton('create');
+        $this->crud->removeButton('show');
+        $this->crud->removeButton('delete');
+
+        CRUD::addColumn([
+            'label' => "Tên Nhân Viên",
+            'type' => 'select',
+            'name' => 'user_id',
+            'entity' => 'user',
+            'model' => "App\Models\User",
+            'attribute' => 'name',
+        ]);
+
+        CRUD::addColumn([
+            'label' => "Giờ bắt đầu làm việc",
+            'type' => 'dateTime',
+            'name' => 'start_time',
+        ]);
+
+        CRUD::addColumn([
+            'label' => "Giờ nghỉ",
+            'type' => 'dateTime',
+            'name' => 'end_time',
+        ]);
+
+        CRUD::addColumn([
+            'label' => "Tổng thời gian làm việc",
+            'type' => 'integer',
+            'name' => 'total_time',
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'late_start',
+            'label' => "Đi muộn",
+            'type' => 'boolean',
+            'options' => [1 => 'Không', 0 => 'Đã đi muộn']
+        ]);
+
+        CRUD::addColumn([
+            'name' => 'late_attendance',
+            'label' => "Chấm công muộn",
+            'type' => 'boolean',
+            'options' => [1 => 'Không', 0 => 'Muộn']
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
