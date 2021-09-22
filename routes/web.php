@@ -3,8 +3,9 @@
 use App\Http\Controllers\Admin\MicrosoftController;
 use App\Http\Controllers\ApproveController;
 use App\Http\Controllers\JobController;
-use App\Models\Timekeeping;
-use Carbon\Carbon;
+
+use App\Http\Controllers\TimekeepingController;
+
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -18,14 +19,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/',[TimekeepingController::class,'renderQrCode']);
+Route::get('/api/{code}/{id}',[TimekeepingController::class,'handle']);
 Route::get('/admin/sign-in',[MicrosoftController::class,'msLogin'])->name('ms_login');
 Route::get('/callback',[MicrosoftController::class,'callback'])->name('show_sign_in_view');
 Route::get('/approve/{request_id}/{hash}/{choice}',[ApproveController::class,'accept']);
-
-Route::get('/test',function (){
-    $date = date_format(Carbon::now()->addDay(-1),'Y-m-d');
-    return Timekeeping::query()->where([['start_time','like', '%'.$date.'%'],'user_id'=>3])->get();
-});
