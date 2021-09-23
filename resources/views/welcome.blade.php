@@ -130,7 +130,7 @@
     </div>
 </div>
 <script>
-    setTimeout(function(){ location.reload(); }, 1000 * 30);
+    setTimeout(function(){ location.reload(); }, 1000 * 60 * 5);
 </script>
 </body>
 </html>
