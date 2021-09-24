@@ -143,6 +143,21 @@ class TimekeepingCrudController extends CrudController
             }
         });
 
+        $this->crud->addFilter([
+            'name' => 'end_time',
+            'type' => 'dropdown',
+            'label' => 'Quên chấm công'
+        ], [
+            0 => 'Quên chấm công',
+            1 => 'Đã chấm công',
+        ], function ($value) {
+            if ($value == 1) {
+                $this->crud->addClause('where', 'end_time', '!=', null);
+            } else {
+                $this->crud->addClause('where', 'end_time', '=', null);
+            }
+        });
+
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
