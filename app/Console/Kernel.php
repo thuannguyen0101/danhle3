@@ -13,7 +13,7 @@ class Kernel extends ConsoleKernel
      * @var array
      */
     protected $commands = [
-        //
+        'App\Console\Commands\CloseJob'
     ];
 
     /**
@@ -24,7 +24,8 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+//         $schedule->command('closeJob:cron')->dailyAt('23:59')->timezone('Asia/Ho_Chi_Minh');
+         $schedule->command('closeJob:cron')->everyMinute();
     }
 
     /**

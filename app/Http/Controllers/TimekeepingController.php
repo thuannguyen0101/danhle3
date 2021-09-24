@@ -19,6 +19,7 @@ class TimekeepingController extends Controller
         ]);
     }
 
+
     public function handle($request_code, $id)
     {
         $time = Carbon::now('Asia/Ho_Chi_Minh');
@@ -91,5 +92,4 @@ class TimekeepingController extends Controller
             'code' => 'A06',
         ]);
     }
-
 }
