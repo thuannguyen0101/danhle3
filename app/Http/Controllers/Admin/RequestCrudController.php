@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\RequestRequest;
 use App\Jobs\SendWelcomeEmail;
-use App\Models\Approve;
 use App\Models\Request;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -123,6 +122,7 @@ class RequestCrudController extends CrudController
             'type' => 'boolean',
             'options' => [1 => 'Đã Hoàn Thành', 0 => 'Chưa Hoàn Thành']
         ]);
+
         CRUD::addColumn([
             'label' => "Nội Dung",
             'name' => 'message',
@@ -166,6 +166,7 @@ class RequestCrudController extends CrudController
                     'class' => 'form-group col-md-6'
                 ],
             ],
+
             [
                 'label' => "Đến ngày",
                 'name' => 'end_date',

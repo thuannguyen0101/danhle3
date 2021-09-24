@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Timekeeping;
 use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 
@@ -18,6 +17,7 @@ class TimekeepingController extends Controller
             'value'=>$code
         ]);
     }
+
     public function handle($request_code,$id){
         $time = Carbon::now('Asia/Ho_Chi_Minh');
         $code = Cache::get('code');
@@ -51,5 +51,4 @@ class TimekeepingController extends Controller
 
         return "đen lắm em";
     }
-
 }
